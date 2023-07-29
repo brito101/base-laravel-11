@@ -241,12 +241,12 @@ return [
         [
             'text'        => 'Dashboard',
             'url'         => '/admin',
-            'icon'        => 'fa fa-fw fa-digital-tachograph',
+            'icon'        => 'fa fa-fw fa-digital-tachograph mr-2',
         ],
         [
             'text'        => 'Usuários',
             'url'         => '#',
-            'icon'        => 'fas fa-fw fa-users',
+            'icon'        => 'fas fa-fw fa-users mr-2',
             'can'         => 'Acessar Usuários',
             'submenu' => [
                 [
@@ -265,7 +265,7 @@ return [
         ],
         [
             'text'    => 'ACL',
-            'icon'    => 'fas fa-fw fa-user-shield',
+            'icon'    => 'fas fa-fw fa-user-shield mr-2',
             'can'     => 'Acessar ACL',
             'submenu' => [
 
@@ -297,12 +297,12 @@ return [
         [
             'text'        => 'Changelog',
             'url'    => 'admin/changelog',
-            'icon'    => 'fas fa-fw fa-code',
+            'icon'    => 'fas fa-fw fa-code mr-2',
         ],
         [
             'text'        => 'Site',
             'url'    => '/',
-            'icon'    => 'fas fa-fw fa-link',
+            'icon'    => 'fas fa-fw fa-link mr-2',
             'target' => '_blank',
         ]
     ],
