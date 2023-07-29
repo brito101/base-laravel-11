@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     UserController,
     ACL\PermissionController,
     ACL\RoleController,
+    ChangelogController,
 };
 
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('role/{role}/permission', [RoleController::class, 'permissions'])->name('role.permissions');
         Route::put('role/{role}/permission/sync', [RoleController::class, 'permissionsSync'])->name('role.permissionsSync');
         Route::resource('role', RoleController::class);
+
+        /** Changelog */
+        Route::get('/changelog', [ChangelogController::class, 'index'])->name('changelog');
     });
 });
 

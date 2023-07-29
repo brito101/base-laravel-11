@@ -295,6 +295,11 @@ return [
             ]
         ],
         [
+            'text'        => 'Changelog',
+            'url'    => 'admin/changelog',
+            'icon'    => 'fas fa-fw fa-code',
+        ],
+        [
             'text'        => 'Site',
             'url'    => '/',
             'icon'    => 'fas fa-fw fa-link',
