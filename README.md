@@ -1,18 +1,23 @@
-# SIOC - Sistema de Informações de Operações Cibernéticas
+# Base Project with Laravel 10 + Docker + Telescope + Debugar + AdminLTE3 + DataTables server side + Spatie ACL
 
-## Project with Laravel 10 + Docker + Telescope + Debugar + AdminLTE3 + DataTables server side + Spatie ACL
+## Resources
 
-### Installation
+Basic user controller
+Visitors log
 
-1. `git clone https://github.com/brito101/sioc`
-2. `cd sioc`
-3. `cp .env.example .env`
-4. Edit .env parameters
-5. `composer install`
-6. `php artisan key:generate`
-7. `php artisan storage:link`
-8. `php artisan migrate --seed`
-9. `npm install && npm run dev`
+## Usage
+
+- `cp .env.example .env`
+- Edit .env parameters
+- `alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'`
+- `sail composer install`
+- `sail artisan key:generate`
+- `sail artisan storage:link`
+- `sail artisan migrate --seed`
+- `npm install && npm run dev`
+- `sail stop`
+
+- `docker-compose exec laravel.test bash`
 
 ### Programmer login
 

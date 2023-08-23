@@ -28,18 +28,6 @@ class UsersTableSeeder extends Seeder
                 'password'  => bcrypt(env('ADMIN_PASSWD')),
                 'created_at' => new DateTime('now')
             ],
-            [
-                'name'      => 'Coordenador',
-                'email'     => env('COORD_EMAIL'),
-                'password'  => bcrypt(env('COORD_PASSWD')),
-                'created_at' => new DateTime('now')
-            ],
-            [
-                'name'      => 'Guerreiro',
-                'email'     => env('CYBER_EMAIL'),
-                'password'  => bcrypt(env('CYBER_PASSWD')),
-                'created_at' => new DateTime('now')
-            ],
         ]);
     }
 }

@@ -10,8 +10,4 @@ class VisitYesterday extends Model
     use HasFactory;
 
     protected $table = 'visitors_yesterday_view';
-
-    protected $hidden = [
-        'request',
-    ];
 }

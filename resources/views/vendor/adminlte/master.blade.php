@@ -32,7 +32,7 @@
 
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic&display=swap">
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     @else
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
@@ -51,9 +51,9 @@
 
     {{-- Favicon --}}
     @if (config('adminlte.use_ico_only'))
-        <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+        <link rel="shortcut icon" href="{{ asset('img/favicon.svg') }}" />
     @elseif(config('adminlte.use_full_favicon'))
-        <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+        <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
         <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicons/apple-icon-60x60.png') }}">
         <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('favicons/apple-icon-72x72.png') }}">
@@ -105,7 +105,6 @@
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
     @yield('custom_js')
-    @yield('chat_js')
 </body>
 
 </html>

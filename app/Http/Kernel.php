@@ -46,10 +46,6 @@ class Kernel extends HttpKernel
             \Shetabit\Visitor\Middlewares\LogVisits::class,
         ],
 
-        'log' => [
-            \Shetabit\Visitor\Middlewares\LogVisits::class,
-        ],
-
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',

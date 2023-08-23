@@ -19,7 +19,7 @@
         class="{{ config('adminlte.logo_img_class', 'brand-image img-circle elevation-3') }}" style="opacity:.8">
 
     {{-- Brand text --}}
-    <span class="brand-text font-weight-bold {{ config('adminlte.classes_brand_text') }}">
+    <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
         {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
     </span>
 

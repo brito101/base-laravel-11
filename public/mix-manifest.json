@@ -1,24 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/css/login.css": "/css/login.css",
-    "/img/403-error.webp": "/img/403-error.webp",
-    "/img/404-error.png": "/img/404-error.png",
-    "/img/404-error.webp": "/img/404-error.webp",
-    "/img/brand-transparent.png": "/img/brand-transparent.png",
-    "/img/brand.png": "/img/brand.png",
     "/img/favicon.svg": "/img/favicon.svg",
-    "/img/logo-transparent.png": "/img/logo-transparent.png",
-    "/img/logo.png": "/img/logo.png",
     "/js/company.js": "/js/company.js",
     "/js/address.js": "/js/address.js",
-    "/js/phone.js": "/js/phone.js",
-    "/js/snow.js": "/js/snow.js",
-    "/js/tools-observations.js": "/js/tools-observations.js",
-    "/js/tools-files.js": "/js/tools-files.js",
-    "/js/operations-files.js": "/js/operations-files.js",
-    "/js/kanban.js": "/js/kanban.js",
-    "/js/kanbanActions.js": "/js/kanbanActions.js",
-    "/js/document-person.js": "/js/document-person.js",
-    "/js/chat.js": "/js/chat.js"
+    "/js/phone.js": "/js/phone.js"
 }

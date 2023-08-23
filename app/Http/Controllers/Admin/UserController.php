@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
-use App\Models\Organization;
 use App\Models\User;
-use App\Models\Views\Organization as ViewsOrganization;
 use App\Models\Views\User as ViewsUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,9 +27,9 @@ class UserController extends Controller
         CheckPermission::checkAuth('Listar Usuários');
 
         if (Auth::user()->hasRole('Programador')) {
-            $users = ViewsUser::all('id', 'alias', 'name', 'email', 'type', 'subordination');
+            $users = ViewsUser::all('id', 'name', 'email', 'type');
         } elseif (Auth::user()->hasRole('Administrador')) {
-            $users = ViewsUser::select('id', 'alias', 'name', 'email', 'type', 'subordination')->whereIn('type', ['Administrador', 'Usuário'])->get();
+            $users = ViewsUser::whereIn('type', ['Administrador', 'Usuário'])->get();
         } else {
             $users = null;
         }
@@ -46,11 +44,7 @@ class UserController extends Controller
                     $btn = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="users/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                     return $btn;
                 })
-                ->addColumn('name', function ($row) {
-                    $text = Str::limit(($row->alias ? $row->alias : $row->name), 100, '...');
-                    return $text;
-                })
-                ->rawColumns(['action', 'name'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
@@ -71,10 +65,7 @@ class UserController extends Controller
         } else {
             $roles = Role::where('name', '!=', 'Programador')->get(['id', 'name']);
         }
-
-        $organizations = ViewsOrganization::select('id', 'alias_name')->orderBy('alias_name')->get();
-
-        return view('admin.users.create', compact('roles', 'organizations'));
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -123,8 +114,6 @@ class UserController extends Controller
             if (!empty($request->role)) {
                 $user->syncRoles($request->role);
                 $user->save();
-            } else {
-                $user->syncRoles("Guerreiro");
             }
             return redirect()
                 ->route('admin.users.index')
@@ -136,13 +125,6 @@ class UserController extends Controller
                 ->with('error', 'Erro ao cadastrar!');
         }
     }
-
-    public function show($id)
-    {
-        CheckPermission::checkAuth('Listar Usuários');
-        return redirect()->route('admin.users.index');
-    }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -170,9 +152,7 @@ class UserController extends Controller
             $roles = Role::where('name', '!=', 'Programador')->get(['id', 'name']);
         }
 
-        $organizations = ViewsOrganization::select('id', 'alias_name')->orderBy('alias_name')->get();
-
-        return view('admin.users.edit', compact('user', 'roles', 'organizations'));
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
