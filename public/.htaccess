@@ -19,3 +19,38 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+## Hardening ##
+<IfModule mod_headers.c>
+ Header set X-XSS-Protection "1; mode=block"
+	Header set X-Frame-Options "SAMEORIGIN"
+	Header set X-Content-Type-Options "nosniff"
+	Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+	# Header set Content-Security-Policy ...
+	Header set Referrer-Policy "same-origin"
+	Header set Feature-Policy "geolocation 'self'"
+	Header unset X-Powered-By
+    Header always unset X-Powered-By
+</IfModule>
+
+ExpiresActive On
+ExpiresByType image/jpg "access 1 year"
+ExpiresByType image/jpeg "access 1 year"
+ExpiresByType image/gif "access 1 year"
+ExpiresByType image/png "access 1 year"
+ExpiresByType text/css "access 1 month"
+ExpiresByType text/html "access 1 month"
+ExpiresByType application/pdf "access 1 month"
+ExpiresByType text/x-javascript "access 1 month"
+ExpiresByType application/x-shockwave-flash "access 1 month"
+ExpiresByType image/x-icon "access 1 year"
+ExpiresDefault "access 1 month"
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(ico|gif|jpg|jpeg|png)$">
+          Header set Cache-Control "max-age=31536000"
+    </FilesMatch>
+    <FilesMatch "\.(css|js)$">
+          Header set Cache-Control "max-age=31536000"
+    </FilesMatch>
+</IfModule>

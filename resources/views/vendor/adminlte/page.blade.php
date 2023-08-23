@@ -33,6 +33,11 @@
             @include('adminlte::partials.cwrapper.cwrapper-iframe')
         @endempty
 
+        {{-- Chat --}}
+        @if (Request::segment(1) == 'admin')
+            @include('admin.components.chat')
+        @endif
+
         {{-- Footer --}}
         @hasSection('footer')
             @include('adminlte::partials.footer.footer')
@@ -45,11 +50,13 @@
 
     </div>
     <footer class="main-footer fixed-bottom">
-        <strong>Copyright © 2022-{{ date('Y') }} <a href="https://www.rodrigobrito.dev.br" target="_blank"
-                rel="noreferrer" title="Rodrigo Brito Desenvolvedor Web">rodrigobrito.dev.br</a>.</strong>
-        Todos os direitos Reservados.
+        {{-- <strong>Copyright © 2022-{{ date('Y') }} <a href="https://www.rodrigobrito.dev.br" target="_blank" rel="noreferrer"
+                title="Rodrigo Brito Desenvolvedor Web">rodrigobrito.dev.br</a>.</strong> --}}
+        <strong>Copyright © 2023-{{ date('Y') }} <span class="text-warning">Curso de Guerra
+                Cibernética-2023</span></strong>
+        {{-- Todos os direitos Reservados. --}}
         <div class="float-right d-none d-sm-inline-block">
-            <b>Versão</b> 1.0.0
+            <b>Versão</b> {{ env('APP_VERSION') ?? '1.0.3' }}
         </div>
     </footer>
 @stop

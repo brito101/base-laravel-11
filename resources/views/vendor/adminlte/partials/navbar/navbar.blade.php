@@ -1,6 +1,7 @@
-<nav class="main-header navbar
+<nav
+    class="main-header navbar
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand') }}
-    {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
+    {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }} dark-mode border-dark">
 
     {{-- Navbar left links --}}
     <ul class="navbar-nav">
@@ -23,8 +24,8 @@
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-right'), 'item')
 
         {{-- User menu link --}}
-        @if(Auth::user())
-            @if(config('adminlte.usermenu_enabled'))
+        @if (Auth::user())
+            @if (config('adminlte.usermenu_enabled'))
                 @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
             @else
                 @include('adminlte::partials.navbar.menu-item-logout-link')
@@ -32,7 +33,7 @@
         @endif
 
         {{-- Right sidebar toggler link --}}
-        @if(config('adminlte.right_sidebar'))
+        @if (config('adminlte.right_sidebar'))
             @include('adminlte::partials.navbar.menu-item-right-sidebar-toggler')
         @endif
     </ul>

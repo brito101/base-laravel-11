@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,11 +16,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, Visitor, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $dates = ['deleted_at'];
 
     /**
@@ -34,6 +30,9 @@ class User extends Authenticatable
         'photo',
         'telephone',
         'cell',
+        'organization_id',
+        'alias',
+        'document_person'
     ];
 
     /**
@@ -54,4 +53,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /** Relationships */
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class)->withDefault(
+            ['alias_name' => null]
+        );
+    }
 }

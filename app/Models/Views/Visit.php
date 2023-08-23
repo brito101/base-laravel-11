@@ -10,4 +10,8 @@ class Visit extends Model
     use HasFactory;
 
     protected $table = 'visitors_view';
+
+    protected $hidden = [
+        'request',
+    ];
 }

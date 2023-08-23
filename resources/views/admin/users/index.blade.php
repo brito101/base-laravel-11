@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-fw fa-users"></i> Usuários</h1>
+                    <h1><i class="fas fa-fw fa-user"></i> Usuários</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -33,22 +33,23 @@
                             <div class="d-flex flex-wrap justify-content-between col-12 align-content-center">
                                 <h3 class="card-title align-self-center">Usuários Cadastrados</h3>
                                 @can('Criar Usuários')
-                                    <a href="{{ route('admin.users.create') }}" title="Novo Usuário"
-                                        class="btn btn-success"><i class="fas fa-fw fa-plus"></i>Novo Usuário</a>
+                                    <a href="{{ route('admin.users.create') }}" title="Novo Usuário" class="btn btn-success"><i
+                                            class="fas fa-fw fa-plus"></i>Novo Usuário</a>
                                 @endcan
                             </div>
                         </div>
 
                         @php
-                            $heads = [['label' => 'ID', 'width' => 10], 'Nome', 'E-mail', 'Tipo', ['label' => 'Ações', 'no-export' => true, 'width' => 10]];
+                            $heads = [['label' => 'ID', 'width' => 10], 'Nome', 'Organização', 'E-mail', 'Tipo', ['label' => 'Ações', 'no-export' => true, 'width' => 10]];
                             $config = [
                                 'ajax' => url('/admin/users'),
-                                'columns' => [['data' => 'id', 'name' => 'id'], ['data' => 'name', 'name' => 'name'], ['data' => 'email', 'name' => 'email'], ['data' => 'type', 'name' => 'type'], ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]],
+                                'columns' => [['data' => 'id', 'name' => 'id'], ['data' => 'name', 'name' => 'name'], ['data' => 'subordination', 'name' => 'subordination'], ['data' => 'email', 'name' => 'email'], ['data' => 'type', 'name' => 'type'], ['data' => 'action', 'name' => 'action', 'orderable' => false, 'searchable' => false]],
                                 'language' => ['url' => asset('vendor/datatables/js/pt-BR.json')],
                                 'autoFill' => true,
                                 'processing' => true,
                                 'serverSide' => true,
                                 'responsive' => true,
+                                'order' => [0, 'desc'],
                                 'dom' => '<"d-flex flex-wrap col-12 justify-content-between"Bf>rtip',
                                 'buttons' => [
                                     ['extend' => 'pageLength', 'className' => 'btn-default'],

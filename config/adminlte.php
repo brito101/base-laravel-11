@@ -48,8 +48,9 @@ return [
     */
 
     'logo' => env('APP_NAME'),
-    'logo_img' => 'vendor/adminlte/dist/img/logo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    // 'logo_img' => 'vendor/adminlte/dist/img/logo.png',
+    'logo_img' => 'img/logo-transparent.png',
+    'logo_img_class' => 'brand-image elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => env('APP_NAME'),
@@ -90,7 +91,7 @@ return [
     'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => true,
-    'layout_dark_mode' => null,
+    'layout_dark_mode' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -104,12 +105,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
+    'classes_auth_card' => 'card-outline card-yellow',
     'classes_auth_header' => '',
-    'classes_auth_body' => '',
+    'classes_auth_body' => 'bg-warning',
     'classes_auth_footer' => '',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_btn' => 'btn-flat btn-dark',
 
     /*
     |--------------------------------------------------------------------------
@@ -129,9 +130,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-dark-gray elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-dark navbar-dark',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -194,8 +195,10 @@ return [
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => false, //'register',
-    'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
+    'password_reset_url' => false,
+    // 'password_reset_url' => 'password/reset',
+    'password_email_url' => false,
+    // 'password_email_url' => 'password/email',
     'profile_url' => false,
 
     /*
@@ -246,22 +249,156 @@ return [
         [
             'text'        => 'Usuários',
             'url'         => '#',
-            'icon'        => 'fas fa-fw fa-users mr-2',
+            'icon'        => 'fas fa-fw fa-user mr-2',
             'can'         => 'Acessar Usuários',
             'submenu' => [
                 [
                     'text' => 'Listagem de Usuários',
                     'url'  => 'admin/users',
-                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
                     'can'  => 'Listar Usuários',
                 ],
                 [
-                    'text' => 'Cadastro de Usuários',
+                    'text' => 'Cadastro de Usuário',
                     'url'  => 'admin/users/create',
-                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
                     'can'  => 'Criar Usuários',
                 ],
             ],
+        ],
+        [
+            'text'        => 'Equipes',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-users mr-2',
+            'can'         => 'Acessar Equipes',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Equipes',
+                    'url'  => 'admin/teams',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Listar Equipes',
+                ],
+                [
+                    'text' => 'Cadastro de Equipe',
+                    'url'  => 'admin/teams/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Criar Equipes',
+                ],
+            ],
+        ],
+        [
+            'text'        => 'Operações',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-bullseye mr-2',
+            'can'         => 'Acessar Operações',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Operações',
+                    'url'  => 'admin/operations',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Listar Operações',
+                ],
+                [
+                    'text' => 'Operações em Andamento',
+                    'url'  => 'admin/operations/ongoing',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Listar Operações',
+                ],
+                [
+                    'text' => 'Cadastro de Operação',
+                    'url'  => 'admin/operations/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Criar Operações',
+                ],
+            ],
+        ],
+        [
+            'text'        => 'Relatórios',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-file mr-2',
+            'can'         => 'Acessar Relatórios',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Relatórios',
+                    'url'  => 'admin/reports',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Listar Relatórios',
+                ],
+                [
+                    'text' => 'Cadastro de Relatório',
+                    'url'  => 'admin/reports/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Criar Relatórios',
+                ],
+            ],
+        ],
+        [
+            'text'        => 'Ferramentas',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-virus mr-2',
+            'can'         => 'Acessar Ferramentas',
+            'submenu' => [
+                [
+                    'text' => 'Listagem de Ferramentas',
+                    'url'  => 'admin/tools',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Listar Ferramentas',
+                ],
+                [
+                    'text' => 'Cadastro de Ferramenta',
+                    'url'  => 'admin/tools/create',
+                    'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                    'can'  => 'Criar Ferramentas',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Configurações',
+            'icon'    => 'fas fa-fw fa-cogs mr-2',
+            'can'     => 'Acessar Configurações',
+            'submenu' => [
+                [
+                    'text'        => 'Organizações',
+                    'url'         => '#',
+                    'icon'        => 'fas fa-fw fa-building mr-2',
+                    'can'         => 'Acessar Usuários',
+                    'submenu' => [
+                        [
+                            'text' => 'Listagem de Organizações',
+                            'url'  => 'admin/organizations',
+                            'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                            'can'  => 'Listar Organizações',
+                        ],
+                        [
+                            'text' => 'Cadastro de Organização',
+                            'url'  => 'admin/organizations/create',
+                            'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                            'can'  => 'Criar Organizações',
+                        ],
+                    ],
+                ],
+                [
+                    'text'        => 'Fases',
+                    'url'         => '#',
+                    'icon'        => 'fas fa-fw fa-shoe-prints mr-2',
+                    'can'         => 'Acessar Fases',
+                    'submenu' => [
+                        [
+                            'text' => 'Listagem de Fases',
+                            'url'  => 'admin/steps',
+                            'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                            'can'  => 'Listar Fases',
+                        ],
+                        [
+                            'text' => 'Cadastro de Fases',
+                            'url'  => 'admin/steps/create',
+                            'icon' => 'fas fa-fw fa-chevron-right mr-2',
+                            'can'  => 'Criar Fases',
+                        ],
+                    ],
+                ],
+            ]
+
         ],
         [
             'text'    => 'ACL',
@@ -272,24 +409,24 @@ return [
                 [
                     'text' => 'Listagem de Perfis',
                     'url'  => 'admin/role',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
+                    'icon'    => 'fas fa-fw fa-chevron-right mr-2',
                     'can'     => 'Listar Perfis',
                 ],
                 [
                     'text' => 'Cadastro de Perfis',
                     'url'  => 'admin/role/create',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
+                    'icon'    => 'fas fa-fw fa-chevron-right mr-2',
                     'can'     => 'Criar Perfis',
                 ],
                 [
                     'text' => 'Listagem de Permissões',
                     'url'  => 'admin/permission',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
+                    'icon'    => 'fas fa-fw fa-chevron-right mr-2',
                 ],
                 [
                     'text' => 'Cadastro de Permissões',
                     'url'  => 'admin/permission/create',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
+                    'icon'    => 'fas fa-fw fa-chevron-right mr-2',
                     'can'     => 'Criar Permissões',
                 ],
             ]
@@ -298,13 +435,13 @@ return [
             'text'        => 'Changelog',
             'url'    => 'admin/changelog',
             'icon'    => 'fas fa-fw fa-code mr-2',
-        ],
-        [
-            'text'        => 'Site',
-            'url'    => '/',
-            'icon'    => 'fas fa-fw fa-link mr-2',
-            'target' => '_blank',
         ]
+        // [
+        //     'text'        => 'Site',
+        //     'url'    => '/',
+        //     'icon'    => 'fas fa-fw fa-link',
+        //     'target' => '_blank',
+        // ]
     ],
 
     /*
@@ -504,6 +641,36 @@ return [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'vendor/summernote/summernote-bs4.min.css',
+                ],
+            ],
+        ],
+        'BootstrapColorpicker' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css',
+                ],
+            ],
+        ],
+        'BootstrapSelect' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css',
                 ],
             ],
         ],

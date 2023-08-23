@@ -9,7 +9,7 @@
 
         {{-- Header --}}
         @isset($title)
-            @if(! empty($url))
+            @if (!empty($url))
                 <a href="{{ $url }}">{{ $title }}</a>
             @else
                 {{ $title }}

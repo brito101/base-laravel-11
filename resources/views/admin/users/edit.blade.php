@@ -50,6 +50,33 @@
                                             placeholder="Nome Completo" name="name"
                                             value="{{ old('name') ?? $user->name }}" required>
                                     </div>
+                                    <div class="col-12 col-md-6 form-group px-0 pl-md-2">
+                                        <label for="document_person">CPF</label>
+                                        <input type="text" class="form-control" id="document_person" placeholder="CPF"
+                                            name="document_person"
+                                            value="{{ old('document_person') ?? $user->document_person }}">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                        <label for="alias">Nome de Guerra / Apelido</label>
+                                        <input type="text" class="form-control" id="alias"
+                                            placeholder="Nome de Guerra ou apelido" name="alias"
+                                            value="{{ old('alias') ?? $user->alias }}">
+                                    </div>
+                                    <div class="col-12 col-md-6 form-group pl-0 pl-md-2 mb-0">
+                                        <label for="state">Organização</label>
+                                        <x-adminlte-select2 name="organization_id">
+                                            <option value="">Nenhuma</option>
+                                            @foreach ($organizations as $org)
+                                                <option
+                                                    {{ old('organization_id') == $org->id ? 'selected' : ($user->organization_id == $org->id ? 'selected' : '') }}
+                                                    value="{{ $org->id }}">{{ $org->alias_name }}
+                                                </option>
+                                            @endforeach
+                                        </x-adminlte-select2>
+                                    </div>
                                 </div>
 
                                 <div class="d-flex flex-wrap justify-content-between">
@@ -129,6 +156,6 @@
 
 @section('custom_js')
     <script src="{{ asset('vendor/jquery/jquery.inputmask.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/address.js') }}"></script>
     <script src="{{ asset('js/phone.js') }}"></script>
+    <script src="{{ asset('js/document-person.js') }}"></script>
 @endsection
