@@ -1,6 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/img/403-error.webp": "/img/403-error.webp",
+    "/img/404-error.webp": "/img/404-error.webp",
     "/img/favicon.svg": "/img/favicon.svg",
     "/js/company.js": "/js/company.js",
     "/js/address.js": "/js/address.js",
