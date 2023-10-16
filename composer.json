@@ -19,6 +19,7 @@
         "shetabit/visitor": "^4.0",
         "silviolleite/laravelpwa": "^2.0",
         "spatie/laravel-permission": "^5.10",
+        "tymon/jwt-auth": "^2.0",
         "yajra/laravel-datatables": "^10.0"
     },
     "require-dev": {
