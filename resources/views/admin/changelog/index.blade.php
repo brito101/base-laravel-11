@@ -34,7 +34,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-12 col-lg-6 order-2 order-md-1">
+                    <div class="col-12 col-md-12 col-lg-6 order-2 order-md-1 overflow-auto" style="max-height: 65vh;">
                         <div class="row">
                             <div class="col-12">
                                 <h4>Versionamento:</h4>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-12 col-lg-6 order-1 order-md-2">
+                    <div class="col-12 col-md-12 col-lg-6 order-1 order-md-2 overflow-auto" style="max-height: 65vh;">
 
                         <x-adminlte-profile-widget name="{{ env('APP_NAME')}}" desc="{{ env('APP_DES')}}"
                             theme="bg-gradient-dark" img="{{ asset('img/favicon.svg') }}" layout-type="classic">
