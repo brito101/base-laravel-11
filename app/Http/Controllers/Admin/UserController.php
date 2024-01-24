@@ -7,6 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Models\Views\User as ViewsUser;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -20,29 +25,28 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return View|Factory|Application|JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): View|Factory|Application|JsonResponse
     {
         CheckPermission::checkAuth('Listar Usuários');
 
-        if (Auth::user()->hasRole('Programador')) {
-            $users = ViewsUser::all('id', 'name', 'email', 'type');
-        } elseif (Auth::user()->hasRole('Administrador')) {
-            $users = ViewsUser::whereIn('type', ['Administrador', 'Usuário'])->get();
-        } else {
-            $users = null;
-        }
-
         if ($request->ajax()) {
+            if (Auth::user()->hasRole('Programador')) {
+                $users = ViewsUser::all('id', 'name', 'email', 'type');
+            } elseif (Auth::user()->hasRole('Administrador')) {
+                $users = ViewsUser::whereIn('type', ['Administrador', 'Usuário'])->get();
+            } else {
+                $users = null;
+            }
 
             $token = csrf_token();
 
             return Datatables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
-                    $btn = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="users/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
-                    return $btn;
+                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="users/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -54,9 +58,9 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|\Illuminate\Foundation\Application|View
      */
-    public function create()
+    public function create(): View|\Illuminate\Foundation\Application|Factory|Application
     {
         CheckPermission::checkAuth('Criar Usuários');
 
@@ -71,10 +75,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param UserRequest $request
+     * @return RedirectResponse
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request): RedirectResponse
     {
         CheckPermission::checkAuth('Criar Usuários');
 
@@ -83,29 +87,8 @@ class UserController extends Controller
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
-            $extension = $request->photo->extension();
-            $nameFile = "{$name}.{$extension}";
+            $data = $this->saveImage($request, $name, $data);
 
-            $data['photo'] = $nameFile;
-
-            $destinationPath = storage_path() . '/app/public/users';
-
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 755, true);
-            }
-
-            $img = Image::make($request->photo);
-            $img->resize(null, 100, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })->crop(100, 100)->save($destinationPath . '/' . $nameFile);
-
-            if (!$img) {
-                return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with('error', 'Falha ao fazer o upload da imagem');
-            }
         }
 
         $user = User::create($data);
@@ -129,10 +112,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int|null $id
+     * @return Application|Factory|\Illuminate\Foundation\Application|View
      */
-    public function edit($id = null)
+    public function edit(int $id = null): View|\Illuminate\Foundation\Application|Factory|Application
     {
         if ($id) {
             CheckPermission::checkAuth('Editar Usuários');
@@ -158,11 +141,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UserRequest $request
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, int $id): RedirectResponse
     {
         CheckPermission::checkManyAuth(['Editar Usuários', 'Editar Usuário']);
 
@@ -192,28 +175,8 @@ class UserController extends Controller
                 unlink($imagePath);
             }
 
-            $extenstion = $request->photo->extension();
-            $nameFile = "{$name}.{$extenstion}";
+            $data = $this->saveImage($request, $name, $data);
 
-            $data['photo'] = $nameFile;
-
-            $destinationPath = storage_path() . '/app/public/users';
-
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 755, true);
-            }
-
-            $img = Image::make($request->photo);
-            $img->resize(null, 100, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })->crop(100, 100)->save($destinationPath . '/' . $nameFile);
-
-            if (!$img)
-                return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with('error', 'Falha ao fazer o upload da imagem');
         }
 
         if ($user->update($data)) {
@@ -238,13 +201,14 @@ class UserController extends Controller
                 ->with('error', 'Erro ao atualizar!');
         }
     }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         CheckPermission::checkAuth('Excluir Usuários');
 
@@ -270,5 +234,32 @@ class UserController extends Controller
                 ->back()
                 ->with('error', 'Erro ao excluir!');
         }
+    }
+
+    /**
+     * @param UserRequest $request
+     * @param string $name
+     * @param array $data
+     * @return array
+     */
+    private function saveImage(UserRequest $request, string $name, array $data): array
+    {
+        $extension = $request->photo->extension();
+        $nameFile = "$name.$extension";
+
+        $data['photo'] = $nameFile;
+
+        $destinationPath = storage_path() . '/app/public/users';
+
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 755, true);
+        }
+
+        $img = Image::make($request->photo);
+        $img->resize(null, 100, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        })->crop(100, 100)->save($destinationPath . '/' . $nameFile);
+        return $data;
     }
 }

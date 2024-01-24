@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin\ACL;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\UnauthorizedException;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use DataTables;
@@ -16,26 +19,24 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View|Application|JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): Application|View|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
         CheckPermission::checkAuth('Listar Perfis');
 
-        $roles = Role::all(['id', 'name']);
-
         if ($request->ajax()) {
-
+            $roles = Role::all(['id', 'name']);
             $token = csrf_token();
 
             return Datatables::of($roles)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
-                    $btn = '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="role/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<a class="btn btn-xs btn-secondary mx-1 shadow" title="Sincronizar" href="role/' . $row->id . '/permission"><i class="fa fa-lg fa-fw fa-sync"></i></a>' . '<form method="POST" action="role/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste perfil?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
-                    return $btn;
+                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="role/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<a class="btn btn-xs btn-secondary mx-1 shadow" title="Sincronizar" href="role/' . $row->id . '/permission"><i class="fa fa-lg fa-fw fa-sync"></i></a>' . '<form method="POST" action="role/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste perfil?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                 })
                 ->rawColumns(['action'])
-                ->make(true);
+                ->make();
         }
 
         return view('admin.acl.roles.index');
@@ -44,9 +45,9 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|\Illuminate\Contracts\Foundation\Application|View
      */
-    public function create()
+    public function create(): View|Factory|Application|\Illuminate\Contracts\Foundation\Application
     {
         CheckPermission::checkAuth('Criar Perfis');
 
@@ -56,10 +57,10 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         CheckPermission::checkAuth('Criar Perfis');
 
@@ -88,10 +89,10 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Application|Factory|\Illuminate\Contracts\Foundation\Application|View
      */
-    public function edit($id)
+    public function edit(int $id): View|Factory|Application|\Illuminate\Contracts\Foundation\Application
     {
         CheckPermission::checkAuth('Editar Perfis');
 
@@ -106,11 +107,11 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         CheckPermission::checkAuth('Editar Perfis');
 
@@ -142,10 +143,10 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         CheckPermission::checkAuth('Excluir Perfis');
 
@@ -165,7 +166,11 @@ class RoleController extends Controller
         }
     }
 
-    public function permissions($id)
+    /**
+     * @param $id
+     * @return View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+     */
+    public function permissions($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         CheckPermission::checkAuth('Sincronizar Perfis');
 
@@ -189,7 +194,12 @@ class RoleController extends Controller
     }
 
 
-    public function permissionsSync(Request $request, $id)
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function permissionsSync(Request $request, int $id): RedirectResponse
     {
 
         CheckPermission::checkAuth('Sincronizar Perfis');

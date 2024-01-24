@@ -106,7 +106,7 @@
                                 </div>
 
                                 <div class="position-relative mb-4">
-                                    <div class="chartjs-size-monitor" z>
+                                    <div class="chartjs-size-monitor">
                                         <div class="chartjs-size-monitor-expand">
                                             <div class=""></div>
                                         </div>

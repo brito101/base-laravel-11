@@ -3,13 +3,12 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class Contact extends Mailable
 {
-    private $data;
+    private array $data;
 
     use Queueable,
         SerializesModels;
@@ -29,7 +28,7 @@ class Contact extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this->to(env('MAIL_TO_ADDRESS'), env('MAIL_TO_NAME'))
             ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))

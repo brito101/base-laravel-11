@@ -7,8 +7,10 @@ use App\Models\User;
 use App\Models\Views\User as ViewsUser;
 use App\Models\Views\Visit;
 use App\Models\Views\VisitYesterday;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use DataTables;
+use stdClass;
 
 class AdminController extends Controller
 {
@@ -51,7 +53,10 @@ class AdminController extends Controller
         ));
     }
 
-    public function chart()
+    /**
+     * @return JsonResponse
+     */
+    public function chart(): JsonResponse
     {
         /** Statistics */
         $statistics = $this->accessStatistics();
@@ -68,7 +73,10 @@ class AdminController extends Controller
         ]);
     }
 
-    private function accessStatistics()
+    /**
+     * @return array
+     */
+    private function accessStatistics(): array
     {
         $onlineUsers = User::online()->count();
 
@@ -108,7 +116,7 @@ class AdminController extends Controller
             $dataList[$key . 'H'] = count($value);
         }
 
-        $chart = new \stdClass();
+        $chart = new stdClass();
         $chart->labels = (array_keys($dataList));
         $chart->dataset = (array_values($dataList));
 
