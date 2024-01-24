@@ -6,6 +6,10 @@ use Symfony\Component\Process\Process;
 
 class Command
 {
+    /**
+     * @param $cmd
+     * @return array
+     */
     public static function execute($cmd): array
     {
         $process = Process::fromShellCommandline($cmd);
@@ -28,18 +32,21 @@ class Command
 
     /**
      * Summary of checkInstall
-     * @param string $program
-     * @return bool
      */
     public static function checkInstall(string $program, string $package = null): bool
     {
-        $result = Command::execute("which {$program}");
+        $result = Command::execute("which $program");
 
-        if ($result['result'] == "" || $result['error'] == true) {
+        if ($result['result'] == "" || $result['error']) {
 
-            $installation = Command::execute("sudo apt install {$program} -y");
+            $yum = Command::execute("which yum");
+            if ($yum['result'] != "" || !$result['error']) {
+                $installation = Command::execute("sudo yum install $program -y");
+            } else {
+                $installation = Command::execute("sudo apt install $program -y");
+            }
 
-            if ($installation['result'] == "" || $installation['error'] == true) {
+            if ($installation['result'] == "" || $installation['error']) {
                 return false;
             } else {
                 if ($package) {

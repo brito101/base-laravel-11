@@ -2,41 +2,64 @@
 
 namespace App\Helpers;
 
+use DOMDocument;
+use DOMXPath;
 use Exception;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 
 class TextProcessor
 {
 
-    public static function store(string $title, string $package, string $text = ''): string
+    /**
+     * @param string $title
+     * @param string $package
+     * @param string $text
+     * @param bool $xss
+     * @return string
+     */
+    public static function store(string $title, string $package, string $text = '', bool $xss = false): string
     {
-        $description =  $text;
-        $dom = new \DOMDocument();
-        $dom->encoding = 'utf-8';
-        $dom->loadHTML(utf8_decode($description), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+        $text = preg_replace('/[\x{34F}\x{AD}\x{200E}]/u', '', $text);
+        $description = str_replace(["\'<?xml encoding=\"utf-8\" ?>\'", "<!--?xml encoding=\"utf-8\" ?-->"], ['', ''], $text);
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
         $imageFile = $dom->getElementsByTagName('img');
 
         foreach ($imageFile as $item => $image) {
             $img = $image->getAttribute('src');
-            if (filter_var($img, FILTER_VALIDATE_URL) == false) {
-                list($type, $img) = explode(';', $img);
-                list(, $img) = explode(',', $img);
-                $imageData = base64_decode($img);
-                $image_name =  Str::slug($title) . '-' . time() . $item . '.png';
-
-                $destinationPath = storage_path() . '/app/public/' . $package . '/text';
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 755, true);
+            if (!filter_var($img, FILTER_VALIDATE_URL)) {
+                if (array_key_exists(1, explode(';', $img))) {
+                    list(, $img) = explode(';', $img);
                 }
 
-                $path = $destinationPath . '/' . $image_name;
-                file_put_contents($path, $imageData);
-                $image->removeAttribute('src');
-                $image->removeAttribute('data-filename');
-                $image->setAttribute('alt', $title);
-                $image->setAttribute('style', 'max-width: 100%;');
-                $image->setAttribute('src', url('storage/' . $package . '/text/' . $image_name));
+                if (array_key_exists(1, explode(',', $img))) {
+                    list(, $img) = explode(',', $img);
+                }
+
+                if ($img && self::check_base64_image($img)) {
+
+                    $imageData = base64_decode($img);
+                    $image_name =  Str::slug($title) . '-' . time() . $item . '.png';
+
+                    $destinationPath = storage_path() . '/app/public/' . $package . '/text';
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 755, true);
+                    }
+
+                    $path = $destinationPath . '/' . $image_name;
+                    file_put_contents($path, $imageData);
+                    $image->removeAttribute('src');
+                    $image->removeAttribute('data-filename');
+
+                    $image->setAttribute('alt', $title);
+                    $oldStyle = $image->getAttribute('style');
+                    if ($oldStyle) {
+                        $image->setAttribute('style', $oldStyle . ' max-width: 100%;');
+                    } else {
+                        $image->setAttribute('style', 'max-width: 100%;');
+                    }
+                    $image->setAttribute('src', '/storage/' . $package . '/text/' . $image_name);
+                }
             }
         }
 
@@ -47,10 +70,18 @@ class TextProcessor
             try {
                 $nodeDiv = $dom->createElement("code", $nodePre->nodeValue);
                 $nodePre->parentNode->replaceChild($nodeDiv, $nodePre);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 continue;
             }
         }
+
+        if (!$xss) {
+            $xss = $dom->getElementsByTagName("script");
+            foreach ($xss as $e) {
+                $e->parentNode->removeChild($e);
+            }
+        }
+
 
         $description = $dom->saveHTML();
 
@@ -58,28 +89,59 @@ class TextProcessor
             $description = '';
         }
 
-        return $description;
+        $url = str_replace('www.', '', env('APP_URL'));
+        return str_replace([$url, env('APP_URL'), env('APP_URL_A'), env('APP_URL_B')], ['', '', '', ''], $description);
     }
 
-    public static function urlImageTransform($text): string
+    /**
+     * @param $text
+     * @param bool $misc
+     * @return string
+     */
+    public static function urlImageTransform($text, bool $misc = false): string
     {
-        $dom = new \DOMDocument();
-        $dom->encoding = 'utf-8';
-        $dom->loadHTML(utf8_decode($text), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+        if ($misc) {
+            $text =  substr($text, 0, strpos($text, "<p><b>3. A")) . '</div>';
+        }
+
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $text, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
         $imageFile = $dom->getElementsByTagName('img');
 
+
         $url = str_replace('www.', '', env('APP_URL'));
-        foreach ($imageFile as $item => $image) {
-            $img = str_replace([$url, env('APP_URL')], ['', ''], $image->getAttribute('src'));
+        foreach ($imageFile as $image) {
+            $img = str_replace([$url, env('APP_URL'), env('APP_URL_A'), env('APP_URL_B')], ['', '', '', ''], $image->getAttribute('src'));
 
             try {
                 $image->setAttribute('src', 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path($img))));
-            } catch (Exception $e) {
+                $oldStyle = $image->getAttribute('style');
+                if ($oldStyle) {
+                    $image->setAttribute('style', $oldStyle . ' max-width: 100%; height: auto;');
+                } else {
+                    $image->setAttribute('style', 'max-width: 100%; height: auto;');
+                }
+            } catch (Exception) {
                 $image->parentNode->removeChild($image);
             }
         }
 
-        $content = $dom->saveHTML();
-        return $content;
+        if ($misc) {
+            $xpath = new DOMXPath($dom);
+            foreach ($xpath->query('//div[contains(attribute::class, "remove-misc")]') as $e) {
+                $e->parentNode->removeChild($e);
+            }
+        }
+
+        return $dom->saveHTML();
+    }
+
+    /**
+     * @param $s
+     * @return bool
+     */
+    private static function check_base64_image($s): bool
+    {
+        return (bool) preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $s);
     }
 }
