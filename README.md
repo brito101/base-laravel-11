@@ -24,3 +24,10 @@ Visitors log
 
 -   user: <programador@base.com>
 -   pass: 12345678
+
+sudo apt-get install texlive-latex-base
+sudo apt-get install texlive-fonts-recommended
+sudo apt-get install texlive-fonts-extra
+sudo apt-get install texlive-latex-extra
+sudo apt-get install texlive-bibtex-extra
+sudo apt-get install biber

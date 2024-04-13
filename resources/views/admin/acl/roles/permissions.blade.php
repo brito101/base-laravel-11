@@ -2,6 +2,10 @@
 
 @section('title', '- Sicronizar Permissões')
 
+@section('adminlte_css_pre')
+    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+@stop
+
 @section('content')
 
     <section class="content-header">
@@ -42,7 +46,7 @@
                                 @foreach ($permissions as $permission)
                                     <div class="col-12 col-md-4">
                                         <div class="card p-0">
-                                            <div class="card-body ">
+                                            <div class="card-body icheck-primary">
                                                 <input type="checkbox" style="cursor: pointer" id="{{ $permission->id }}"
                                                     name="{{ $permission->id }}"
                                                     {{ $permission->can == '1' ? 'checked' : '' }}>
