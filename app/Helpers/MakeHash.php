@@ -4,18 +4,19 @@ namespace App\Helpers;
 
 class MakeHash
 {
-
     public ?string $word;
+
     public string $md5;
+
     public string $sha1;
+
     public string $sha256;
+
     public string $sha512;
+
     public string $ntlm;
 
-    /**
-     * @param string|null $word
-     */
-    public function __construct(string $word = null)
+    public function __construct(?string $word = null)
     {
         $this->word = $word;
         $this->md5 = $this->md5();
@@ -25,42 +26,27 @@ class MakeHash
         $this->ntlm = $this->ntlm();
     }
 
-    /**
-     * @return string
-     */
-    private function  md5(): string
+    private function md5(): string
     {
         return hash('md5', $this->word);
     }
 
-    /**
-     * @return string
-     */
-    private function  sha1(): string
+    private function sha1(): string
     {
         return hash('sha1', $this->word);
     }
 
-    /**
-     * @return string
-     */
-    private function  sha256(): string
+    private function sha256(): string
     {
         return hash('sha256', $this->word);
     }
 
-    /**
-     * @return string
-     */
-    private function  sha512(): string
+    private function sha512(): string
     {
         return hash('sha512', $this->word);
     }
 
-    /**
-     * @return string
-     */
-    private function  ntlm(): string
+    private function ntlm(): string
     {
         // Convert the password from UTF8 to UTF16 (little endian)
         $Input = iconv('UTF-8', 'UTF-16LE', $this->word);
@@ -72,6 +58,6 @@ class MakeHash
         $NTLMHash = strtoupper($MD4Hash);
 
         // Return the result
-        return ($NTLMHash);
+        return $NTLMHash;
     }
 }

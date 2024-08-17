@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Models\Views\User as ViewsUser;
+use DataTables;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,17 +17,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 use Image;
-use DataTables;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @param Request $request
-     * @return View|Factory|Application|JsonResponse
      */
     public function index(Request $request): View|Factory|Application|JsonResponse
     {
@@ -46,7 +43,7 @@ class UserController extends Controller
             return Datatables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
-                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="users/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.'<form method="POST" action="users/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -57,8 +54,6 @@ class UserController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|\Illuminate\Foundation\Application|View
      */
     public function create(): View|\Illuminate\Foundation\Application|Factory|Application
     {
@@ -69,14 +64,12 @@ class UserController extends Controller
         } else {
             $roles = Role::where('name', '!=', 'Programador')->get(['id', 'name']);
         }
+
         return view('admin.users.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param UserRequest $request
-     * @return RedirectResponse
      */
     public function store(UserRequest $request): RedirectResponse
     {
@@ -86,7 +79,7 @@ class UserController extends Controller
         $data['password'] = bcrypt($request->password);
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 100)) . time();
+            $name = Str::slug(mb_substr($data['name'], 0, 100)).time();
             $data = $this->saveImage($request, $name, $data);
 
         }
@@ -94,10 +87,11 @@ class UserController extends Controller
         $user = User::create($data);
 
         if ($user->save()) {
-            if (!empty($request->role)) {
+            if (! empty($request->role)) {
                 $user->syncRoles($request->role);
                 $user->save();
             }
+
             return redirect()
                 ->route('admin.users.index')
                 ->with('success', 'Cadastro realizado!');
@@ -111,11 +105,8 @@ class UserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param int|null $id
-     * @return Application|Factory|\Illuminate\Foundation\Application|View
      */
-    public function edit(int $id = null): View|\Illuminate\Foundation\Application|Factory|Application
+    public function edit(?int $id = null): View|\Illuminate\Foundation\Application|Factory|Application
     {
         if ($id) {
             CheckPermission::checkAuth('Editar Usuários');
@@ -125,7 +116,7 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Acesso não autorizado');
         }
 
@@ -140,10 +131,6 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param UserRequest $request
-     * @param int $id
-     * @return RedirectResponse
      */
     public function update(UserRequest $request, int $id): RedirectResponse
     {
@@ -151,25 +138,25 @@ class UserController extends Controller
 
         $data = $request->all();
 
-        if (!Auth::user()->hasPermissionTo('Editar Usuários') && Auth::user()->hasPermissionTo('Editar Usuário')) {
+        if (! Auth::user()->hasPermissionTo('Editar Usuários') && Auth::user()->hasPermissionTo('Editar Usuário')) {
             $user = User::where('id', Auth::user()->id)->first();
         } else {
             $user = User::find($id);
         }
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Acesso não autorizado');
         }
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $data['password'] = bcrypt($request->password);
         } else {
             $data['password'] = $user->password;
         }
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $name = Str::slug(mb_substr($data['name'], 0, 200)) . "-" . time();
-            $imagePath = storage_path() . '/app/public/users/' . $user->photo;
+            $name = Str::slug(mb_substr($data['name'], 0, 200)).'-'.time();
+            $imagePath = storage_path().'/app/public/users/'.$user->photo;
 
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -180,7 +167,7 @@ class UserController extends Controller
         }
 
         if ($user->update($data)) {
-            if (!empty($request->role)) {
+            if (! empty($request->role)) {
                 $user->syncRoles($request->role);
                 $user->save();
             }
@@ -204,9 +191,6 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return RedirectResponse
      */
     public function destroy(int $id): RedirectResponse
     {
@@ -214,11 +198,11 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Acesso não autorizado');
         }
 
-        $imagePath = storage_path() . '/app/public/users/' . $user->photo;
+        $imagePath = storage_path().'/app/public/users/'.$user->photo;
         if ($user->delete()) {
             if (File::isFile($imagePath)) {
                 unlink($imagePath);
@@ -236,12 +220,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * @param UserRequest $request
-     * @param string $name
-     * @param array $data
-     * @return array
-     */
     private function saveImage(UserRequest $request, string $name, array $data): array
     {
         $extension = $request->photo->extension();
@@ -249,9 +227,9 @@ class UserController extends Controller
 
         $data['photo'] = $nameFile;
 
-        $destinationPath = storage_path() . '/app/public/users';
+        $destinationPath = storage_path().'/app/public/users';
 
-        if (!file_exists($destinationPath)) {
+        if (! file_exists($destinationPath)) {
             mkdir($destinationPath, 755, true);
         }
 
@@ -259,7 +237,8 @@ class UserController extends Controller
         $img->resize(null, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        })->crop(100, 100)->save($destinationPath . '/' . $nameFile);
+        })->crop(100, 100)->save($destinationPath.'/'.$nameFile);
+
         return $data;
     }
 }

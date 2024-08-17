@@ -21,89 +21,89 @@ class PermissionsTableSeeder extends Seeder
             [
                 'name' => 'Acessar ACL',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Listar Permissões',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Criar Permissões',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Editar Permissões',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Excluir Permissões',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Listar Perfis',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Criar Perfis',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Editar Perfis',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Excluir Perfis',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Sincronizar Perfis',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Atribuir Perfis',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
 
             /** Users 12 to 17 */
             [
                 'name' => 'Acessar Usuários',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Listar Usuários',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Criar Usuários',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Editar Usuário',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Editar Usuários',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Excluir Usuários',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
         ]);
     }

@@ -1,13 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\{
-    AdminController,
-    UserController,
-    ACL\PermissionController,
-    ACL\RoleController,
-    ChangelogController,
-};
-
+use App\Http\Controllers\Admin\ACL\PermissionController;
+use App\Http\Controllers\Admin\ACL\RoleController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ChangelogController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

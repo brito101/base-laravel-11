@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\ACL;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use DataTables;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -11,16 +12,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
-use DataTables;
 
 class PermissionController extends Controller
 {
-
     /**
      * Display a listing of the resource.
-     *
-     * @param Request $request
-     * @return Application|Factory|\Illuminate\Contracts\Foundation\Application|JsonResponse|View
      */
     public function index(Request $request): View|Factory|Application|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
@@ -33,7 +29,7 @@ class PermissionController extends Controller
             return Datatables::of($permissions)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($token) {
-                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="permission/' . $row->id . '/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>' . '<form method="POST" action="permission/' . $row->id . '" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' . $token . '"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta permissão?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
+                    return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="permission/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.'<form method="POST" action="permission/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão desta permissão?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                 })
                 ->rawColumns(['action'])
                 ->make();
@@ -44,8 +40,6 @@ class PermissionController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|\Illuminate\Contracts\Foundation\Application|View
      */
     public function create(): View|Factory|Application|\Illuminate\Contracts\Foundation\Application
     {
@@ -56,9 +50,6 @@ class PermissionController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse
     {
@@ -88,16 +79,13 @@ class PermissionController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Application|Factory|\Illuminate\Contracts\Foundation\Application|View
      */
     public function edit(int $id): View|Factory|Application|\Illuminate\Contracts\Foundation\Application
     {
         CheckPermission::checkAuth('Editar Permissões');
 
         $permission = Permission::find($id);
-        if (!$permission) {
+        if (! $permission) {
             abort(403, 'Acesso não autorizado');
         }
 
@@ -106,10 +94,6 @@ class PermissionController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return RedirectResponse
      */
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -124,7 +108,7 @@ class PermissionController extends Controller
         }
 
         $permission = Permission::find($id);
-        if (!$permission) {
+        if (! $permission) {
             abort(403, 'Acesso não autorizado');
         }
 
@@ -142,16 +126,13 @@ class PermissionController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return RedirectResponse
      */
     public function destroy(int $id): RedirectResponse
     {
         CheckPermission::checkAuth('Excluir Permissões');
 
         $permission = Permission::find($id);
-        if (!$permission) {
+        if (! $permission) {
             abort(403, 'Acesso não autorizado');
         }
 

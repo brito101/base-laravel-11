@@ -228,7 +228,7 @@ return [
 
     'menu' => [
         [
-            'type'         => 'fullscreen-widget',
+            'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
@@ -239,72 +239,72 @@ return [
         ],
         //Custom menus
         [
-            'text'        => 'Dashboard',
-            'url'         => '/admin',
-            'icon'        => 'fa fa-fw fa-digital-tachograph mr-2',
+            'text' => 'Dashboard',
+            'url' => '/admin',
+            'icon' => 'fa fa-fw fa-digital-tachograph mr-2',
         ],
         [
-            'text'        => 'Usuários',
-            'url'         => '#',
-            'icon'        => 'fas fa-fw fa-users mr-2',
-            'can'         => 'Acessar Usuários',
+            'text' => 'Usuários',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-users mr-2',
+            'can' => 'Acessar Usuários',
             'submenu' => [
                 [
                     'text' => 'Listagem de Usuários',
-                    'url'  => 'admin/users',
+                    'url' => 'admin/users',
                     'icon' => 'fas fa-fw fa-chevron-right',
-                    'can'  => 'Listar Usuários',
+                    'can' => 'Listar Usuários',
                 ],
                 [
                     'text' => 'Cadastro de Usuários',
-                    'url'  => 'admin/users/create',
+                    'url' => 'admin/users/create',
                     'icon' => 'fas fa-fw fa-chevron-right',
-                    'can'  => 'Criar Usuários',
+                    'can' => 'Criar Usuários',
                 ],
             ],
         ],
         [
-            'text'    => 'ACL',
-            'icon'    => 'fas fa-fw fa-user-shield mr-2',
-            'can'     => 'Acessar ACL',
+            'text' => 'ACL',
+            'icon' => 'fas fa-fw fa-user-shield mr-2',
+            'can' => 'Acessar ACL',
             'submenu' => [
 
                 [
                     'text' => 'Listagem de Perfis',
-                    'url'  => 'admin/role',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
-                    'can'     => 'Listar Perfis',
+                    'url' => 'admin/role',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Listar Perfis',
                 ],
                 [
                     'text' => 'Cadastro de Perfis',
-                    'url'  => 'admin/role/create',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
-                    'can'     => 'Criar Perfis',
+                    'url' => 'admin/role/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Perfis',
                 ],
                 [
                     'text' => 'Listagem de Permissões',
-                    'url'  => 'admin/permission',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
+                    'url' => 'admin/permission',
+                    'icon' => 'fas fa-fw fa-chevron-right',
                 ],
                 [
                     'text' => 'Cadastro de Permissões',
-                    'url'  => 'admin/permission/create',
-                    'icon'    => 'fas fa-fw fa-chevron-right',
-                    'can'     => 'Criar Permissões',
+                    'url' => 'admin/permission/create',
+                    'icon' => 'fas fa-fw fa-chevron-right',
+                    'can' => 'Criar Permissões',
                 ],
-            ]
+            ],
         ],
         [
-            'text'        => 'Changelog',
-            'url'    => 'admin/changelog',
-            'icon'    => 'fas fa-fw fa-code mr-2',
+            'text' => 'Changelog',
+            'url' => 'admin/changelog',
+            'icon' => 'fas fa-fw fa-code mr-2',
         ],
         [
-            'text'        => 'Site',
-            'url'    => '/',
-            'icon'    => 'fas fa-fw fa-link mr-2',
+            'text' => 'Site',
+            'url' => '/',
+            'icon' => 'fas fa-fw fa-link mr-2',
             'target' => '_blank',
-        ]
+        ],
     ],
 
     /*

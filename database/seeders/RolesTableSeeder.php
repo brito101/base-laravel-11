@@ -20,17 +20,17 @@ class RolesTableSeeder extends Seeder
             [
                 'name' => 'Programador',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Administrador',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
             [
                 'name' => 'Usuário',
                 'guard_name' => 'web',
-                'created_at' => new DateTime('now')
+                'created_at' => new DateTime('now'),
             ],
         ]);
     }

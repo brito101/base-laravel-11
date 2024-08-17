@@ -21,8 +21,6 @@ class Alert extends Component
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|Factory|Application|View
      */
     public function render(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {

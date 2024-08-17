@@ -4,37 +4,25 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
+
 use function count;
 
 class CheckPermission
 {
-
-    /**
-     * @param string $auth
-     * @return void
-     */
     public static function checkAuth(string $auth): void
     {
-        if (self::roleExist($auth) && !Auth::user()->hasPermissionTo($auth)) {
+        if (self::roleExist($auth) && ! Auth::user()->hasPermissionTo($auth)) {
             abort(403, 'Acesso não autorizado');
         }
     }
 
-    /**
-     * @param array $auth
-     * @return void
-     */
     public static function checkManyAuth(array $auth): void
     {
-        if (self::roleExist($auth) && !Auth::user()->hasAnyPermission($auth)) {
+        if (self::roleExist($auth) && ! Auth::user()->hasAnyPermission($auth)) {
             abort(403, 'Acesso não autorizado');
         }
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
     private static function roleExist($name): bool
     {
         if (count(Permission::where('name', $name)->get()) <= 0) {
@@ -46,6 +34,7 @@ class CheckPermission
                 Permission::create(['name' => $name]);
             }
         }
+
         return true;
     }
 }

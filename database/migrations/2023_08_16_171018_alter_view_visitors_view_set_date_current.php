@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -27,10 +25,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW `visitors_view` AS
         SELECT v.id, v.url, v.method, v.created_at
         FROM shetabit_visits as v
-        ");
+        ');
     }
 };

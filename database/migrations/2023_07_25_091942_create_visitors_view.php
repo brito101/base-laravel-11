@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CreateVisitorsView extends Migration
 {
@@ -14,11 +12,11 @@ class CreateVisitorsView extends Migration
      */
     public function up()
     {
-        DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW `visitors_view` AS
         SELECT v.id, v.url, v.method, v.created_at
         FROM shetabit_visits as v
-        ");
+        ');
     }
 
     /**
@@ -28,6 +26,6 @@ class CreateVisitorsView extends Migration
      */
     public function down()
     {
-        DB::statement("DROP VIEW visitors_view");
+        DB::statement('DROP VIEW visitors_view');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -12,11 +13,10 @@ return [
     'default' => 'jenssegers',
 
     //except save request or route names
-    'except' =>  ['login', 'register'],
-
+    'except' => ['login', 'register'],
 
     //name of the table which visit records should save in
-    'table_name' =>  'shetabit_visits',
+    'table_name' => 'shetabit_visits',
 
     /*
     |--------------------------------------------------------------------------
@@ -33,5 +33,5 @@ return [
     'drivers' => [
         'jenssegers' => \Shetabit\Visitor\Drivers\JenssegersAgent::class,
         'UAParser' => \Shetabit\Visitor\Drivers\UAParser::class,
-    ]
+    ],
 ];

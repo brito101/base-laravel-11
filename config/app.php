@@ -218,7 +218,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
 
-        'Meta'    => Eusonlito\LaravelMeta\Facade::class,
+        'Meta' => Eusonlito\LaravelMeta\Facade::class,
         'Visitor' => Shetabit\Visitor\Facade\Visitor::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Image' => Intervention\Image\Facades\Image::class,

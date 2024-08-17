@@ -32,13 +32,13 @@ class Contact extends Mailable
     {
         return $this->to(env('MAIL_TO_ADDRESS'), env('MAIL_TO_NAME'))
             ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-            ->subject('Contato ' . env('APP_NAME'))
+            ->subject('Contato '.env('APP_NAME'))
             ->markdown('emails.contact', [
                 'name' => $this->data['name'],
                 'email' => $this->data['email'],
                 'phone_number' => $this->data['phone_number'],
                 'msg_subject' => $this->data['msg_subject'],
-                'message' => $this->data['message']
+                'message' => $this->data['message'],
             ]);
     }
 }
