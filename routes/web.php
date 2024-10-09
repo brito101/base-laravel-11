@@ -57,5 +57,5 @@ Auth::routes([
 ]);
 
 Route::fallback(function () {
-    return view('404');
+    abort('404');
 });
