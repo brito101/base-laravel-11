@@ -2,9 +2,9 @@
 
 ## Resources
 
-Basic user controller
-2FA authentication
-Visitors log
+-   Basic user controller
+-   2FA authentication
+-   Visitors log
 
 ## Usage
 
