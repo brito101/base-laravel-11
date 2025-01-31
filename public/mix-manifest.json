@@ -10,5 +10,6 @@
     "/img/favicon.svg": "/img/favicon.svg",
     "/js/company.js": "/js/company.js",
     "/js/address.js": "/js/address.js",
-    "/js/phone.js": "/js/phone.js"
+    "/js/phone.js": "/js/phone.js",
+    "/js/google2fa.js": "/js/google2fa.js"
 }

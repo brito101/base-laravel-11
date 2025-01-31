@@ -3,6 +3,7 @@
 @section('title', '- Editar Usuário')
 @section('plugins.select2', true)
 @section('plugins.BsCustomFileInput', true)
+@section('plugins.BootstrapSwitch', true)
 
 @section('content')
 
@@ -44,7 +45,7 @@
                             <input type="hidden" name="id" value="{{ $user->id }}">
                             <div class="card-body">
                                 <div class="d-flex flex-wrap justify-content-between">
-                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                    <div class="col-12 form-group px-0">
                                         <label for="name">Nome</label>
                                         <input type="text" class="form-control" id="name"
                                             placeholder="Nome Completo" name="name"
@@ -96,6 +97,39 @@
                                             minlength="8" name="password" value="">
                                     </div>
                                 </div>
+
+                                <div
+                                    class="col-12 col-md-6 form-group px-0 {{ Auth::user()->hasPermissionTo('Atribuir Perfis') ? 'pr-md-2' : 'pl-md-2' }} d-flex flex-wrap justify-content-start">
+                                    @if ($user->google2fa_secret_enabled)
+                                        <x-adminlte-input-switch name="google2fa_secret_enabled"
+                                            label="Duplo Fator de Autenticação (Google Auth)" data-on-text="Sim"
+                                            data-off-text="Não" data-on-color="teal" checked id="google2fa"
+                                            data-action="{{ route('admin.user.google2fa') }}"
+                                            data-user="{{ $user->id }}" />
+                                    @else
+                                        <x-adminlte-input-switch name="google2fa_secret_enabled"
+                                            label="Duplo Fator de Autenticação (Google Auth)" data-on-text="Sim"
+                                            data-off-text="Não" data-on-color="teal" id="google2fa"
+                                            data-action="{{ route('admin.user.google2fa') }}"
+                                            data-user="{{ $user->id }}" />
+                                    @endif
+
+                                    <div class="col-12 px-0" id="seed-container">
+                                        <div>
+                                            @if (
+                                                ($user->google2fa_secret_enabled && Auth::user()->id == $user->id) ||
+                                                    ($user->google2fa_secret_enabled && Auth::user()->hasRole('Programador')))
+                                                <p class="w-100 d-inline-block px-0">
+                                                    Semente: <span
+                                                        style="letter-spacing: .2rem; margin-left: 20px; font-weight: 700;">{{ $user->google2fa_secret }}</span>
+                                                </p>
+                                                <img alt="QRCode"
+                                                    src="data:image/png;base64,{{ base64_encode($user->getQRCodeInline()) }}" />
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="d-flex flex-wrap justify-content-between">
                                     @can('Atribuir Perfis')
                                         <div class="col-12 col-md-6 form-group px-0 pr-md-2">
@@ -111,6 +145,23 @@
                                     @endcan
 
                                 </div>
+
+                                @can('Atribuir Perfis')
+                                    @if ($user->id != Auth::user()->id)
+                                        <div
+                                            class="col-12 col-md-6 form-group px-0 pl-md-2 d-flex flex-wrap justify-content-start">
+                                            @if ($user->first_access)
+                                                <x-adminlte-input-switch name="first_access" label="Primeiro Acesso"
+                                                    data-on-text="Sim" data-off-text="Não" data-on-color="teal" checked
+                                                    id="first_access" />
+                                            @else
+                                                <x-adminlte-input-switch name="first_access" label="Primeiro Acesso"
+                                                    data-on-text="Sim" data-off-text="Não" data-on-color="teal"
+                                                    id="first_access" />
+                                            @endif
+                                        </div>
+                                    @endif
+                                @endcan
 
 
                             </div>
@@ -131,4 +182,5 @@
     <script src="{{ asset('vendor/jquery/jquery.inputmask.bundle.min.js') }}"></script>
     <script src="{{ asset('js/address.js') }}"></script>
     <script src="{{ asset('js/phone.js') }}"></script>
+    <script src="{{ asset('js/google2fa.js') }}"></script>
 @endsection

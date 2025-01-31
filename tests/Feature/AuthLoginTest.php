@@ -27,31 +27,31 @@ it('expect redirect if no auth login and post to logout', function () {
 });
 
 it('expect success login', function () {
-    $credentials = array(
+    $credentials = [
         'email' => env('ADMIN_EMAIL'),
         'password' => env('ADMIN_PASSWD'),
-        '_token' => csrf_token()
-    );
+        '_token' => csrf_token(),
+    ];
     $response = $this->post(route('login'), $credentials);
     $response->assertRedirect(route('admin.home'));
 });
 
 it('expect fail login', function () {
-    $credentials = array(
+    $credentials = [
         'email' => 'test',
         'password' => 'test',
-        '_token' => csrf_token()
-    );
+        '_token' => csrf_token(),
+    ];
     $response = $this->post(route('login'), $credentials);
     $response->assertRedirect('/');
-})->expect("Essas credenciais não foram encontradas em nossos registros.");
+})->expect('Essas credenciais não foram encontradas em nossos registros.');
 
 it('expect success logout after login', function () {
-    $credentials = array(
+    $credentials = [
         'email' => env('ADMIN_EMAIL'),
         'password' => env('ADMIN_PASSWD'),
-        '_token' => csrf_token()
-    );
+        '_token' => csrf_token(),
+    ];
     $response = $this->post(route('login'), $credentials);
     $response->assertRedirect(route('admin.home'));
 

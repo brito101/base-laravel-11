@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'access']], function () {
     Route::get('admin', [AdminController::class, 'index'])->name('admin.home');
     Route::prefix('admin')->name('admin.')->group(function () {
         /** Chart home */
@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         /** Users */
         Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
+        Route::post('user/google2fa', [UserController::class, 'google2fa'])->name('user.google2fa');
         Route::resource('users', UserController::class);
 
         /**

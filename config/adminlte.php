@@ -193,7 +193,7 @@ return [
     'dashboard_url' => 'admin',
     'logout_url' => 'logout',
     'login_url' => 'login',
-    'register_url' => false, //'register',
+    'register_url' => false, // 'register',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
     'profile_url' => false,
@@ -237,7 +237,7 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Pesquisar',
         ],
-        //Custom menus
+        // Custom menus
         [
             'text' => 'Dashboard',
             'url' => '/admin',
@@ -404,6 +404,16 @@ return [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
+                ],
+            ],
+        ],
+        'BootstrapSwitch' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.min.js',
                 ],
             ],
         ],

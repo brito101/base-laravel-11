@@ -3,6 +3,7 @@
 @section('title', '- Cadastro de Usuário')
 @section('plugins.select2', true)
 @section('plugins.BsCustomFileInput', true)
+@section('plugins.BootstrapSwitch', true)
 
 @section('content')
 
@@ -42,7 +43,7 @@
                             <div class="card-body">
 
                                 <div class="d-flex flex-wrap justify-content-between">
-                                    <div class="col-12 col-md-6 form-group px-0 pr-md-2">
+                                    <div class="col-12 form-group px-0">
                                         <label for="name">Nome</label>
                                         <input type="text" class="form-control" id="name"
                                             placeholder="Nome Completo" name="name" value="{{ old('name') }}" required>
@@ -94,7 +95,12 @@
                                         </div>
                                     @endcan
                                 </div>
-                            </div>
+
+                                <div class="col-12 col-md-6 form-group px-0 pr-md-2 d-flex flex-wrap justify-content-start">
+                                    <x-adminlte-input-switch name="first_access" label="Primeiro Acesso" data-on-text="Sim"
+                                        data-off-text="Não" data-on-color="teal" id="first_access" />
+                                </div>
+                            </div>                            
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Enviar</button>

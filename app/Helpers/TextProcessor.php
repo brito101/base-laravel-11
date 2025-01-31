@@ -20,7 +20,7 @@ class TextProcessor
         foreach ($imageFile as $item => $image) {
             $img = $image->getAttribute('src');
 
-            //XSS prevention
+            // XSS prevention
             $image->removeAttribute('onerror');
 
             if (! filter_var($img, FILTER_VALIDATE_URL)) {

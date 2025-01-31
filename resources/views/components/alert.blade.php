@@ -17,3 +17,9 @@
         {{ session('error') }}
     </x-adminlte-card>
 @endif
+
+@if (session('warning'))
+    <x-adminlte-card theme="warning" title="Atenção" icon="fas fa-lg fa-exclamation-triangle" removable>
+        {{ session('warning') }}
+    </x-adminlte-card>
+@endif

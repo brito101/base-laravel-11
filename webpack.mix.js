@@ -19,6 +19,7 @@ mix.js("resources/js/app.js", "public/js")
     .scripts(["resources/js/company.js"], "public/js/company.js")
     .scripts(["resources/js/address.js"], "public/js/address.js")
     .scripts(["resources/js/phone.js"], "public/js/phone.js")
+    .scripts(["resources/js/google2fa.js"], "public/js/google2fa.js")
     .options({
         processCssUrls: false,
     })

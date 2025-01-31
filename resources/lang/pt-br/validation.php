@@ -222,6 +222,7 @@ return [
         'contract' => 'regime contratual',
         'activities' => 'atividades',
         'photo' => 'foto',
+        'first_access' => 'primeiro acesso',
     ],
 
 ];

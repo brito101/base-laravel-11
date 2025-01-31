@@ -62,6 +62,24 @@
             @enderror
         </div>
 
+        {{-- 2Fa field --}}
+        <div class="input-group mb-3">
+            <input type="password" name="google2fa" class="form-control @error('google2fa') is-invalid @enderror"
+                placeholder="Duplo fator de autenticação">
+
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-key"></span>
+                </div>
+            </div>
+
+            @error('google2fa')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
         {{-- Login field --}}
         <div class="row">
             <div class="col-7">

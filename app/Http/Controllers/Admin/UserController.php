@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\CheckPermission;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Google2faRequest;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Models\Views\User as ViewsUser;
@@ -148,6 +149,14 @@ class UserController extends Controller
             abort(403, 'Acesso não autorizado');
         }
 
+        if ($request->google2fa_secret_enabled && $user->google2fa_secret == null) {
+            $data['google2fa_secret'] = $user->generateSecretKey();
+        }
+
+        if (! $request->google2fa_secret_enabled) {
+            $data['google2fa_secret'] = null;
+        }
+
         if (! empty($data['password'])) {
             $data['password'] = bcrypt($request->password);
         } else {
@@ -240,5 +249,39 @@ class UserController extends Controller
         })->crop(100, 100)->save($destinationPath.'/'.$nameFile);
 
         return $data;
+    }
+
+    public function google2fa(Google2faRequest $request): JsonResponse
+    {
+        CheckPermission::checkManyAuth(['Editar Usuários', 'Editar Usuário']);
+
+        if (! Auth::user()->hasPermissionTo('Editar Usuários') && Auth::user()->hasPermissionTo('Editar Usuário')) {
+            $user = User::where('id', Auth::user()->id)->first();
+        } else {
+            $user = User::find($request->user);
+        }
+
+        if (! $user) {
+            abort(403, 'Acesso não autorizado');
+        }
+
+        if ($request->data == 1 && $user->google2fa_secret == null) {
+            $user->google2fa_secret_enabled = true;
+            $user->google2fa_secret = $user->generateSecretKey();
+            $user->update();
+            $qrCode = base64_encode($user->getQRCodeInline());
+
+            return response()->json(['message' => 'Atualização Realizada!', 'qrcode' => $qrCode, 'seed' => $user->google2fa_secret]);
+        }
+
+        if (! $request->data) {
+            $user->google2fa_secret_enabled = false;
+            $user->google2fa_secret = null;
+            $user->update();
+
+            return response()->json(['message' => 'Atualização Realizada!', 'qrcode' => null, 'seed' => null]);
+        }
+
+        return response()->json(['message' => 'Falha ao Atualizar!', 'qrcode' => null, 'seed' => null]);
     }
 }

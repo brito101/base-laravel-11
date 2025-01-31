@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Access;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
@@ -97,5 +98,6 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
+        'access' => Access::class,
     ];
 }
