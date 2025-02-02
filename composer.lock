@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6484741c60e1c62d7e6cd60d6f6f7514",
+    "content-hash": "cb2f33b96ff9691d62275da768782cde",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -12218,7 +12218,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -12227,6 +12227,6 @@
         "ext-iconv": "*",
         "ext-libxml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

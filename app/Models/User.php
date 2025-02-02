@@ -16,8 +16,9 @@ use Laravel\Sanctum\HasApiTokens;
 use PragmaRX\Google2FA\Google2FA;
 use Shetabit\Visitor\Traits\Visitor;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes, Visitor;
 
@@ -93,5 +94,16 @@ class User extends Authenticatable
         $writer = new Writer($renderer);
 
         return $writer->writeString($inlineUrl);
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
