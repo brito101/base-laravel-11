@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JWTAuthController extends Controller
 {
@@ -46,8 +47,9 @@ class JWTAuthController extends Controller
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
 
-            // Get the authenticated user.
-            $user = auth()->user()->only('id', 'name', 'email');
+            /** @var User $user */
+            $user = Auth::user();
+            $user = $user->only('id', 'name', 'email');
 
             return response()->json(compact('token', 'user'));
         } catch (JWTException $e) {
@@ -55,11 +57,27 @@ class JWTAuthController extends Controller
         }
     }
 
+    // Refresh token
+    public function refresh(Request $request)
+    {
+        try {
+            return response()->json([
+                'token' => JWTAuth::refresh(JWTAuth::getToken()),
+            ]);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not refresh token'], 500);
+        }
+    }
+
     // User logout
     public function logout()
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
 
-        return response()->json(['message' => 'Successfully logged out']);
+            return response()->json(['message' => 'Successfully logged out']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not logout user'], 500);
+        }
     }
 }

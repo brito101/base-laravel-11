@@ -32,9 +32,9 @@ class UserController extends Controller
 
         if ($request->ajax()) {
             if (Auth::user()->hasRole('Programador')) {
-                $users = ViewsUser::all('id', 'name', 'email', 'type');
+                $users = ViewsUser::all('id', 'name', 'email', 'type', 'photo');
             } elseif (Auth::user()->hasRole('Administrador')) {
-                $users = ViewsUser::whereIn('type', ['Administrador', 'Usuário'])->get();
+                $users = ViewsUser::whereIn('type', ['Administrador', 'Usuário'])->get(['id', 'name', 'email', 'type', 'photo']);
             } else {
                 $users = null;
             }
@@ -46,7 +46,11 @@ class UserController extends Controller
                 ->addColumn('action', function ($row) use ($token) {
                     return '<a class="btn btn-xs btn-primary mx-1 shadow" title="Editar" href="users/'.$row->id.'/edit"><i class="fa fa-lg fa-fw fa-pen"></i></a>'.'<form method="POST" action="users/'.$row->id.'" class="btn btn-xs px-0"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="'.$token.'"><button class="btn btn-xs btn-danger mx-1 shadow" title="Excluir" onclick="return confirm(\'Confirma a exclusão deste usuário?\')"><i class="fa fa-lg fa-fw fa-trash"></i></button></form>';
                 })
-                ->rawColumns(['action'])
+                ->addColumn('photo', function ($row) {
+                    return '<img src="'.($row->photo ? url('storage/users/'.$row->photo) : asset('vendor/adminlte/dist/img/avatar.png')).'"
+                    alt="'.$row->name.'" class="img-circle img-size-32 mr-2 border" style="object-fit: cover; width:75px; height: 75px; aspect-ratio: 1;">';
+                })
+                ->rawColumns(['action', 'photo'])
                 ->make(true);
         }
 

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\JWTAuthController;
-use App\Http\Middleware\JwtMiddleware;
+use App\Http\Middleware\JWTMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +20,19 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('register', [JWTAuthController::class, 'register']);
-Route::post('login', [JWTAuthController::class, 'login']);
+Route::prefix('v1')->name('api.')->group(function () {
 
-Route::middleware([JwtMiddleware::class])->group(function () {
-    Route::get('users', [UserController::class, 'index']);
-    Route::get('profile', [UserController::class, 'profile']);
-    Route::post('logout', [JWTAuthController::class, 'logout']);
+    Route::post('register', [JWTAuthController::class, 'register'])->name('register');
+    Route::post('login', [JWTAuthController::class, 'login'])->name('login');
+
+    Route::middleware([JWTMiddleware::class])->group(function () {
+
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::get('users', [UserController::class, 'index'])->name('users.index');
+            Route::get('profile', [UserController::class, 'profile'])->name('profile');
+        });
+
+        Route::post('refresh', [JWTAuthController::class, 'refresh'])->name('refresh');
+        Route::post('logout', [JWTAuthController::class, 'logout'])->name('logout');
+    });
 });
