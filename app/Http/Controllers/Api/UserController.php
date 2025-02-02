@@ -51,11 +51,11 @@ class UserController extends Controller
         CheckPermission::checkAuth('Listar Usuários');
 
         /** @var User $user */
-        $user = Auth::user();
-        $user = $user->only('id', 'name', 'email', 'type', 'photo');
+        $user = ViewsUser::find(Auth::user()->id);
+        $profile = $user->only('id', 'name', 'email', 'type', 'photo');
 
-        if ($user['photo']) {
-            $user['photo'] = url('/storage/users/'.$user['photo']);
+        if ($profile['photo']) {
+            $profile['photo'] = url('/storage/users/'.$profile['photo']);
         }
 
         return response()->json(compact('user'));
