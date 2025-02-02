@@ -5,6 +5,7 @@
 -   Basic user controller
 -   2FA authentication
 -   Visitors log
+-   API routes with JWT auth
 
 ## Usage
 
@@ -13,7 +14,7 @@
 -   `alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'`
 -   `sail composer install`
 -   `sail artisan key:generate`
--   `SAILartisan jwt:secret`
+-   `sail artisan jwt:secret`
 -   `sail artisan storage:link`
 -   `sail artisan migrate --seed`
 -   `npm install && npm run dev`
