@@ -1,4 +1,4 @@
-# Base Project with Laravel 12 + Docker + Laravel Pint + Laravel PEST + Telescope + Debugar + AdminLTE3 + DataTables server side + Spatie ACL
+# Base Project with Laravel 12 + Docker + Laravel Pint + PEST + Debugar + AdminLTE3 + DataTables server side + Spatie ACL
 
 ## Resources
 
