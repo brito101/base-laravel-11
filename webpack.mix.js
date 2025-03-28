@@ -15,6 +15,8 @@ require("laravel-mix-purgecss");
 mix.js("resources/js/app.js", "public/js")
     .copy("resources/img", "public/img")
     .sass("resources/sass/app.scss", "public/css")
+     /** Dependencies */
+     .copy(["node_modules/jquery/dist/jquery.min.js"], "public/vendor/jquery/jquery.min.js")
     /** Admin */
     .scripts(["resources/js/company.js"], "public/js/company.js")
     .scripts(["resources/js/address.js"], "public/js/address.js")
