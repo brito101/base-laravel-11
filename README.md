@@ -1,4 +1,4 @@
-# Base Project with Laravel 12 + Docker + Laravel Pint + PEST + Debugar + AdminLTE3 + DataTables server side + Spatie ACL
+# Project with Laravel 12 and Docker wuth Laravel Pint, PEST, Debugar, AdminLTE3, DataTables server side and Spatie ACL
 
 ## Resources
 
@@ -11,16 +11,14 @@
 
 -   `cp .env.example .env`
 -   Edit .env parameters
+-   `composer install`
+-   `php artisan key:generate`
+-   `php artisan jwt:secret`
 -   `alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'`
--   `sail composer install`
--   `sail artisan key:generate`
--   `sail artisan jwt:secret`
 -   `sail artisan storage:link`
 -   `sail artisan migrate --seed`
--   `npm install && npm run dev`
--   `sail stop`
+-   `sail npm install && npm run dev`
 
--   `docker-compose exec laravel.test bash`
 
 ### Programmer login
 
